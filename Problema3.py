@@ -2,14 +2,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-# ================================================================
-# Problema 3: Flujo alrededor de una cepa de un puente
-# ================================================================
-
-# Explicación:
-# Representaremos el flujo ideal alrededor de la cepa de un puente usando la función de corriente dada:
-# ψ = U * r * (1 - (a^2 / r^2)) * sin(θ)
-
 # Parámetros
 a = 5    # Radio de la cepa del puente
 U = 1    # Velocidad del flujo en m/s
@@ -44,6 +36,9 @@ mask = R < a
 U_cart[mask] = np.nan
 V_cart[mask] = np.nan
 
+# Magnitud de la velocidad
+speed = np.sqrt(U_cart**2 + V_cart**2)
+
 # Gráfica de líneas de corriente
 plt.figure(figsize=(8, 6))
 contours = plt.contour(X, Y, psi, levels=50, cmap='viridis')
@@ -56,13 +51,14 @@ plt.axis('equal')
 plt.colorbar(contours, label='Función de corriente ψ')
 plt.show()
 
-# Gráfica del campo de velocidades con streamplot
+# Gráfica del campo de velocidades con magnitud
 plt.figure(figsize=(8, 6))
-plt.streamplot(X, Y, U_cart, V_cart, density=2, color='blue')
+plt.streamplot(X, Y, U_cart, V_cart, color=speed, cmap='cool', density=2)
 circle = plt.Circle((0, 0), a, color='black', fill=True)
 plt.gca().add_patch(circle)
-plt.title('Campo de velocidades alrededor de la cepa de un puente')
+plt.title('Campo de velocidades alrededor de la cepa de un puente (con magnitud)')
 plt.xlabel('x [m]')
 plt.ylabel('y [m]')
 plt.axis('equal')
+plt.colorbar(label='Magnitud de velocidad [m/s]')
 plt.show()
